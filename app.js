@@ -38,6 +38,18 @@ function buildBoard() {
 
 buildBoard();
 
+function turnBack() {
+    for (let i = 0; i < flippedCards.length; i++) {
+        const card = flippedCards[i];
+        card.textContent = "";
+        card.classList.remove("flipped");
+        card.setAttribute("aria-label", "Card " + (Number(card.dataset.index) + 1) + ", face down");
+    }
+
+    flippedCards.length = 0;
+    waiting = false;
+}
+
 board.addEventListener("click", function (event) {
     const card = event.target;
 
@@ -76,18 +88,7 @@ board.addEventListener("click", function (event) {
         } else {
             status.textContent = "Not a pair. Try again.";
             waiting = true;
-
-            setTimeout(function () {
-                for (let i = 0; i < flippedCards.length; i++) {
-                    const cardNumber = Number(flippedCards[i].dataset.index) + 1;
-                    flippedCards[i].textContent = "";
-                    flippedCards[i].classList.remove("flipped");
-                    flippedCards[i].setAttribute("aria-label", "Card " + cardNumber + ", face down");
-                }
-
-                flippedCards.length = 0;
-                waiting = false;
-            }, 1000);
+            setTimeout(turnBack, 1000);
         }
     }
 });
