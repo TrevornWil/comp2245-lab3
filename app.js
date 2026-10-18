@@ -85,6 +85,11 @@ board.addEventListener("click", function (event) {
             flippedCards[1].disabled = true;
             status.textContent = "That's a pair!";
             flippedCards.length = 0;
+
+            if (document.querySelectorAll(".card.matched").length === deck.length) {
+                status.textContent = "You found all the pairs in " + moves + " moves!";
+                status.classList.add("you-won");
+            }
         } else {
             status.textContent = "Not a pair. Try again.";
             waiting = true;
