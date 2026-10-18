@@ -19,7 +19,10 @@ function shuffle(array) {
 
 const deck = shuffle([...fruits, ...fruits]);
 const board = document.querySelector("#board");
+const movesDisplay = document.querySelector("#moves");
+const status = document.querySelector("#status");
 const flippedCards = [];
+let moves = 0;
 
 function buildBoard() {
     for (let i = 0; i < deck.length; i++) {
@@ -50,4 +53,21 @@ board.addEventListener("click", function (event) {
     card.classList.add("flipped");
     card.setAttribute("aria-label", "Card " + (Number(card.dataset.index) + 1) + ", " + fruit.name);
     flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        moves++;
+        movesDisplay.textContent = moves;
+
+        const firstFruit = deck[flippedCards[0].dataset.index];
+        const secondFruit = deck[flippedCards[1].dataset.index];
+
+        if (firstFruit.name === secondFruit.name) {
+            flippedCards[0].classList.add("matched");
+            flippedCards[1].classList.add("matched");
+            flippedCards[0].disabled = true;
+            flippedCards[1].disabled = true;
+            status.textContent = "That's a pair!";
+            flippedCards.length = 0;
+        }
+    }
 });
