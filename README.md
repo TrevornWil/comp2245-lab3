@@ -1,1 +1,3 @@
-# comp2245-lab3
+# COMP2245 Lab 3
+
+This is Lab 3 for Trevorn Williams.
