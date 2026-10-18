@@ -23,6 +23,7 @@ const movesDisplay = document.querySelector("#moves");
 const status = document.querySelector("#status");
 const flippedCards = [];
 let moves = 0;
+let waiting = false;
 
 function buildBoard() {
     for (let i = 0; i < deck.length; i++) {
@@ -39,6 +40,10 @@ buildBoard();
 
 board.addEventListener("click", function (event) {
     const card = event.target;
+
+    if (waiting) {
+        return;
+    }
 
     if (!card.classList.contains("card")) {
         return;
@@ -68,6 +73,21 @@ board.addEventListener("click", function (event) {
             flippedCards[1].disabled = true;
             status.textContent = "That's a pair!";
             flippedCards.length = 0;
+        } else {
+            status.textContent = "Not a pair. Try again.";
+            waiting = true;
+
+            setTimeout(function () {
+                for (let i = 0; i < flippedCards.length; i++) {
+                    const cardNumber = Number(flippedCards[i].dataset.index) + 1;
+                    flippedCards[i].textContent = "";
+                    flippedCards[i].classList.remove("flipped");
+                    flippedCards[i].setAttribute("aria-label", "Card " + cardNumber + ", face down");
+                }
+
+                flippedCards.length = 0;
+                waiting = false;
+            }, 1000);
         }
     }
 });
