@@ -17,13 +17,15 @@ function shuffle(array) {
     return array;
 }
 
-const deck = shuffle([...fruits, ...fruits]);
+let deck = shuffle([...fruits, ...fruits]);
 const board = document.querySelector("#board");
 const movesDisplay = document.querySelector("#moves");
 const status = document.querySelector("#status");
+const newGame = document.querySelector("#new-game");
 const flippedCards = [];
 let moves = 0;
 let waiting = false;
+let timer;
 
 function buildBoard() {
     for (let i = 0; i < deck.length; i++) {
@@ -93,7 +95,21 @@ board.addEventListener("click", function (event) {
         } else {
             status.textContent = "Not a pair. Try again.";
             waiting = true;
-            setTimeout(turnBack, 1000);
+            timer = setTimeout(turnBack, 1000);
         }
     }
+});
+
+newGame.addEventListener("click", function () {
+    clearTimeout(timer);
+    timer = null;
+    deck = shuffle([...fruits, ...fruits]);
+    board.replaceChildren();
+    moves = 0;
+    movesDisplay.textContent = moves;
+    flippedCards.length = 0;
+    waiting = false;
+    status.textContent = "Turn over two cards to find a matching pair.";
+    status.classList.remove("you-won");
+    buildBoard();
 });
